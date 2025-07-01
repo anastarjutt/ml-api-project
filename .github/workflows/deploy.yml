@@ -29,6 +29,6 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
         
       - name: build
-        run: docker build -f p7/Dockerfile -t anastarar1122/ml-api-project:latest p7
+        run: docker build -f Dockerfile -t anastarar1122/ml-api-project:latest .
       - name: Deploy
         run: docker push anastarar1122/ml-api-project:latest
