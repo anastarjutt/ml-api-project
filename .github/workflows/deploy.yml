@@ -1,0 +1,35 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set .env From Secrets
+        run: |
+          echo "model_path_v1=${{ secrets.PROD_MODEL_V1_PATH }}">.env
+          echo "model_path_v2=${{ secrets.PROD_MODEL_V2_PATH }}">>.env
+          echo "api_key=${{ secrets.API_KEY }}">>.env
+          echo "running_in_docker=true">>.env
+        
+      - name: Dockerhub Setup
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Dockerhub Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+        
+      - name: Build
+        run: docker build -f Projects/p7/Dockerfile -t anastarar1122/ml-api-project:latest
+      
+      - name: Deploy
+        run: docker push anastarar1122/ml-api-project:latest
