@@ -4,7 +4,7 @@ from config import settings
 from PIL import Image
 import numpy as np
 import io
-from app.utils.model_loader import get_model
+from app.routers.v1 import get_model
 router = APIRouter()
 model = get_model()
 
@@ -29,3 +29,4 @@ async def upload(file:UploadFile = File(...)):
         return {'Prediction':label,'Confidence':confi}
     except Exception as e:
         raise HTTPException(status_code=500,detail='Prediction Failed')
+    
