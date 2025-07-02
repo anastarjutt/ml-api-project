@@ -1,7 +1,7 @@
 import os,logging
 from fastapi import FastAPI,Request
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import v1,v2
+from app.routers import v1,v2,upload_router
 from fastapi.responses import JSONResponse
 
 app = FastAPI(
@@ -21,6 +21,7 @@ app.add_middleware(
 )
 app.include_router(v1.router)
 app.include_router(v2.router)
+app.include_router(upload_router.router)
 
 @app.get('/health')
 def get_health():
